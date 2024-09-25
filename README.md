@@ -16,7 +16,7 @@ Shared Memory addon for OpenFrameworks 11/12, using [kyr0/libsharedmemory](https
     ```cpp
     std::string dataToTransfer = "Hello World!";
         
-    writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, false);
+    writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, false); // name, size, isPersistent
     writer->write(dataToTransfer);
     ofLogNotice() << "Data wrote: " << dataToTransfer;
 
