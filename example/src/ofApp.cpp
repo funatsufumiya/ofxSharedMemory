@@ -1,7 +1,5 @@
 #include "ofApp.h"
 
-using namespace lsm;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofLogToConsole();
@@ -10,11 +8,11 @@ void ofApp::setup(){
 
 	std::string dataToTransfer = "Hello World!";
     
-	writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, false);
+	writer = std::make_shared<ofxSharedMemory::Writer>("strPipe", 65535, false);
 	writer->write(dataToTransfer);
 	ofLogNotice() << "Data wrote: " << dataToTransfer;
 
-	reader = std::make_shared<SharedMemoryReadStream>("strPipe", 65535, false);
+	reader = std::make_shared<ofxSharedMemory::Reader>("strPipe", 65535, false);
 	std::string data = reader->readString();
 	ofLogNotice() << "Data read: " << data;
 

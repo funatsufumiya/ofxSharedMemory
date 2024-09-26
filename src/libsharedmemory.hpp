@@ -507,8 +507,6 @@ public:
         std::memcpy(&memory[flagSize + bufferSizeSize], data, bufferSize);
     }
 
-
-
     inline void destroy() {
         _memory.destroy();
     }

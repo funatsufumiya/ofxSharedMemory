@@ -2,13 +2,13 @@
 
 #include "ofMain.h"
 
-#include "libsharedmemory.hpp"
+#include "ofxSharedMemory.h"
 
 class ofApp : public ofBaseApp{
 
 	public:
-		std::shared_ptr<lsm::SharedMemoryReadStream> reader;
-		std::shared_ptr<lsm::SharedMemoryWriteStream> writer;
+		std::shared_ptr<ofxSharedMemory::Reader> reader;
+		std::shared_ptr<ofxSharedMemory::Writer> writer;
 
 		std::string transferredData;
 
