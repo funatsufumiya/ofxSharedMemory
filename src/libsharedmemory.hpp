@@ -394,6 +394,13 @@ public:
         std::memcpy(buf, &((double*)_memory.data())[flagSize + bufferSizeSize], size);
     }
 
+    inline void readBytesBuf(char* buf) {
+        std::size_t size = readSize(kMemoryTypeString);
+
+        // copy to data buffer
+        std::memcpy(buf, &((char*)_memory.data())[flagSize + bufferSizeSize], size);
+    }
+
 private:
     Memory _memory;
     Error memoryErrorStetus = kOK;
