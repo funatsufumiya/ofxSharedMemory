@@ -115,6 +115,64 @@ namespace ofxSharedMemory {
         return data;
     }
 
+    std::vector<float> Reader::readFloatArray() {
+        if (!isAvailable_) {
+            ofLogError() << "Shared memory reader is not available";
+            return std::vector<float>();
+        }
+
+        // read mutex
+        while (true) {
+            char mutex = mutexReadStream->readString()[0];
+            if (mutex == 0) {
+                break;
+            }
+            ofSleepMillis(1);
+        }
+
+        // lock mutex
+        std::string mutex_data = {1};
+        mutexWriteStream->write(mutex_data);
+
+        // read data
+        std::vector<float> data = readStream->readFloatArray();
+
+        // unlock mutex
+        mutex_data = {0};
+        mutexWriteStream->write(mutex_data);
+
+        return data;
+    }
+
+    std::vector<double> Reader::readDoubleArray() {
+        if (!isAvailable_) {
+            ofLogError() << "Shared memory reader is not available";
+            return std::vector<double>();
+        }
+
+        // read mutex
+        while (true) {
+            char mutex = mutexReadStream->readString()[0];
+            if (mutex == 0) {
+                break;
+            }
+            ofSleepMillis(1);
+        }
+
+        // lock mutex
+        std::string mutex_data = {1};
+        mutexWriteStream->write(mutex_data);
+
+        // read data
+        std::vector<double> data = readStream->readDoubleArray();
+
+        // unlock mutex
+        mutex_data = {0};
+        mutexWriteStream->write(mutex_data);
+
+        return data;
+    }
+
     bool Reader::isAvailable() {
         return isAvailable_;
     }
@@ -212,6 +270,60 @@ namespace ofxSharedMemory {
     }
 
     void Writer::write(const ofBuffer& data) {
+        if (!isAvailable_) {
+            ofLogError() << "Shared memory writer is not available";
+            return;
+        }
+
+        // read mutex
+        while (true) {
+            char mutex = mutexReadStream->readString()[0];
+            if (mutex == 0) {
+                break;
+            }
+            ofSleepMillis(1);
+        }
+
+        // lock mutex
+        std::string mutex_data = {1};
+        mutexWriteStream->write(mutex_data);
+
+        // write data
+        writeStream->write(data);
+
+        // unlock mutex
+        mutex_data = {0};
+        mutexWriteStream->write(mutex_data);
+    }
+
+    void Writer::write(const std::vector<float>& data) {
+        if (!isAvailable_) {
+            ofLogError() << "Shared memory writer is not available";
+            return;
+        }
+
+        // read mutex
+        while (true) {
+            char mutex = mutexReadStream->readString()[0];
+            if (mutex == 0) {
+                break;
+            }
+            ofSleepMillis(1);
+        }
+
+        // lock mutex
+        std::string mutex_data = {1};
+        mutexWriteStream->write(mutex_data);
+
+        // write data
+        writeStream->write(data);
+
+        // unlock mutex
+        mutex_data = {0};
+        mutexWriteStream->write(mutex_data);
+    }
+
+    void Writer::write(const std::vector<double>& data) {
         if (!isAvailable_) {
             ofLogError() << "Shared memory writer is not available";
             return;
