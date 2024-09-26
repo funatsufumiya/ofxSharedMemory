@@ -2,8 +2,6 @@
 
 Shared Memory addon for OpenFrameworks 0.11/0.12, using [kyr0/libsharedmemory](https://github.com/kyr0/libsharedmemory).
 
-***WARNING: Currently not working well between processes.*** see [#1](https://github.com/funatsufumiya/ofxSharedMemory/issues/1)
-
 ## Usage
 
 - ofApp.h
