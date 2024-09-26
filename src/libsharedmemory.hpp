@@ -358,6 +358,21 @@ public:
         return data;
     }
 
+    inline ofBuffer readBytes() {
+        char* memory = (char*) _memory.data();
+
+        std::size_t size = readSize(kMemoryTypeString);
+
+        // create a string that copies the data from memory
+        ofBuffer data;
+        data.allocate(size);
+        
+        // copy to data buffer
+        std::memcpy(data.getData(), &memory[flagSize + bufferSizeSize], size);
+        
+        return data;
+    }
+
     inline void readStringBuf(char* buf) {
         std::size_t size = readSize(kMemoryTypeString);
 
