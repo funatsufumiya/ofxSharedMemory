@@ -240,8 +240,8 @@ public:
         memoryErrorStetus = _memory.open();
         if (memoryErrorStetus != kOK) {
             // throw "Shared memory segment could not be opened.";
-            throw_error("Shared memory segment could not be opened.");
-            // push_error("Shared memory segment could not be opened. (reason: " + errorToString(memoryErrorStetus) + ")");
+            //throw_error("Shared memory segment could not be opened.");
+            push_error("Shared memory segment could not be opened. (reason: " + errorToString(memoryErrorStetus) + ")");
         }
     }
 
