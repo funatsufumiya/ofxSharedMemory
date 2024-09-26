@@ -1,6 +1,6 @@
 # ofxSharedMemory
 
-Shared Memory addon for OpenFrameworks 11/12, using [kyr0/libsharedmemory](https://github.com/kyr0/libsharedmemory).
+Shared Memory addon for OpenFrameworks 0.11/0.12, using [kyr0/libsharedmemory](https://github.com/kyr0/libsharedmemory).
 
 ## Usage
 
