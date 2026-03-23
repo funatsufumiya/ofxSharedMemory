@@ -2,6 +2,21 @@
 
 using namespace lsm;
 
+#define USE_WRITER 1
+#define USE_READER 1
+
+#ifdef USE_WRITER
+inline static bool writer_enabled = true;
+#else
+inline static bool writer_enabled = false;
+#endif // USE_WRITER
+
+#ifdef USE_READER
+inline static bool reader_enabled = true;
+#else
+inline static bool reader_enabled = false;
+#endif // USE_READER
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofLogToConsole();
@@ -10,15 +25,20 @@ void ofApp::setup(){
 
 	std::string dataToTransfer = "Hello World!";
     
-	writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, false);
-	writer->write(dataToTransfer);
-	ofLogNotice() << "Data wrote: " << dataToTransfer;
+	if(writer_enabled){
+		writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, false);
+		writer->write(dataToTransfer);
+		ofLogNotice() << "Data wrote: " << dataToTransfer;
+	}
 
-	reader = std::make_shared<SharedMemoryReadStream>("strPipe", 65535, false);
-	std::string data = reader->readString();
-	ofLogNotice() << "Data read: " << data;
-
-	transferredData = data;
+	if(reader_enabled){
+		reader = std::make_shared<SharedMemoryReadStream>("strPipe", 65535, false);
+		std::string data = reader->readString();
+		ofLogNotice() << "Data read: " << data;
+		transferredData = data;
+	}else{
+		transferredData = dataToTransfer;
+	}
 }
 
 //--------------------------------------------------------------
@@ -27,13 +47,23 @@ void ofApp::update(){
 
 	if (elapsedTimef >= 1.0){
 		counter++;
-		writer->write("Hello World! " + ofToString(counter));
-		ofLogNotice() << "Data wrote: " << "Hello World! " + ofToString(counter);
 
-		std::string data = reader->readString();
-		ofLogNotice() << "Data read: " << data;
+		std::string dataToTransfer = "Hello World! " + ofToString(counter);
 
-		transferredData = data;
+		if(writer_enabled){
+			writer->write(dataToTransfer);
+			ofLogNotice() << "Data wrote: " << "Hello World! " + ofToString(counter);
+		}
+
+		if(reader_enabled){
+			std::string data = reader->readString();
+			ofLogNotice() << "Data read: " << data;
+			transferredData = data;
+		}else{
+			transferredData = dataToTransfer;
+		}
+
+		
 
 		startedTimef = ofGetElapsedTimef();
 		elapsedTimef = 0.0;
@@ -43,6 +73,8 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	ofDrawBitmapStringHighlight("Transferred data: " + transferredData, 20, 20);
+	ofDrawBitmapStringHighlight("writer: " + ofToString(writer_enabled? "on" : "off"), 20, 40);
+	ofDrawBitmapStringHighlight("reader: " + ofToString(reader_enabled? "on" : "off"), 20, 60);
 }
 
 //--------------------------------------------------------------
