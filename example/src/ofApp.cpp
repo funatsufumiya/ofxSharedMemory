@@ -33,9 +33,12 @@ void ofApp::setup(){
 
 	if(reader_enabled){
 		reader = std::make_shared<SharedMemoryReadStream>("strPipe", 65535, false);
-		std::string data = reader->readString();
-		ofLogNotice() << "Data read: " << data;
-		transferredData = data;
+
+		if(reader->hasNewData()){
+			std::string data = reader->readString();
+			ofLogNotice() << "Data read: " << data;
+			transferredData = data;
+		}
 	}else{
 		transferredData = dataToTransfer;
 	}
@@ -56,9 +59,11 @@ void ofApp::update(){
 		}
 
 		if(reader_enabled){
-			std::string data = reader->readString();
-			ofLogNotice() << "Data read: " << data;
-			transferredData = data;
+			if(reader->hasNewData()){
+				std::string data = reader->readString();
+				ofLogNotice() << "Data read: " << data;
+				transferredData = data;
+			}
 		}else{
 			transferredData = dataToTransfer;
 		}
