@@ -26,7 +26,7 @@ void ofApp::setup(){
 	std::string dataToTransfer = "Hello World!";
     
 	if(writer_enabled){
-		writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, false);
+		writer = std::make_shared<SharedMemoryWriteStream>("strPipe", 65535, true);
 		writer->write(dataToTransfer);
 		ofLogNotice() << "Data wrote: " << dataToTransfer;
 	}
@@ -47,7 +47,7 @@ void ofApp::setup(){
 bool ofApp::checkReader(){
 	if(!reader){
 		try{
-			reader = std::make_shared<SharedMemoryReadStream>("strPipe", 65535, false);
+			reader = std::make_shared<SharedMemoryReadStream>("strPipe", 65535, true);
 			return true;
 		}catch(std::exception e){
 			return false;
